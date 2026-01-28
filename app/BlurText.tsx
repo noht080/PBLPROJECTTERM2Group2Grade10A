@@ -17,7 +17,7 @@ type BlurTextProps = {
   easing?: (t: number) => number;
   onAnimationComplete?: () => void;
   stepDuration?: number;
-  as?: ElementType;
+  as?: any;
   display?: "flex" | "inline-flex";
 };
 
