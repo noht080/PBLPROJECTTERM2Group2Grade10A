@@ -101,8 +101,9 @@ const BlurText: React.FC<BlurTextProps> = ({
     stepCount === 1 ? 0 : i / (stepCount - 1)
   );
 
+  const Component = Tag as any;
   return (
-    <Tag
+    <Component
       ref={ref as unknown as React.RefObject<HTMLElement>}
       className={className}
       style={{ display, flexWrap: "wrap" }}
@@ -136,7 +137,7 @@ const BlurText: React.FC<BlurTextProps> = ({
           </motion.span>
         );
       })}
-    </Tag>
+    </Component>
   );
 };
 

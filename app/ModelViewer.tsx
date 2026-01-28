@@ -24,6 +24,7 @@ import {
   Environment,
   ContactShadows,
 } from "@react-three/drei";
+// @ts-ignore
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import * as THREE from "three";
 
@@ -55,15 +56,15 @@ export interface ViewerProps {
   fillLightIntensity?: number;
   rimLightIntensity?: number;
   environmentPreset?:
-    | "city"
-    | "sunset"
-    | "night"
-    | "dawn"
-    | "studio"
-    | "apartment"
-    | "forest"
-    | "park"
-    | "none";
+  | "city"
+  | "sunset"
+  | "night"
+  | "dawn"
+  | "studio"
+  | "apartment"
+  | "forest"
+  | "park"
+  | "none";
   autoFrame?: boolean;
   placeholderSrc?: string;
   showScreenshotButton?: boolean;

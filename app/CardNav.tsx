@@ -15,13 +15,13 @@ export type CardNavItem = {
   label: string;
   bgColor: string;
   textColor: string;
-  links: CardNavLink[];
+  links: readonly CardNavLink[];
 };
 
 export interface CardNavProps {
   logo: string;
   logoAlt?: string;
-  items: CardNavItem[];
+  items: readonly CardNavItem[];
   className?: string;
   ease?: string;
   baseColor?: string;
@@ -174,9 +174,8 @@ const CardNav: React.FC<CardNavProps> = ({
       >
         <div className={styles.cardNavTop}>
           <div
-            className={`${styles.hamburgerMenu} ${
-              isHamburgerOpen ? styles.open : ""
-            }`}
+            className={`${styles.hamburgerMenu} ${isHamburgerOpen ? styles.open : ""
+              }`}
             onClick={toggleMenu}
             role="button"
             aria-label={isExpanded ? "Close menu" : "Open menu"}
