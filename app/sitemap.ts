@@ -1,12 +1,9 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Prefer an explicit site URL, otherwise fall back to Vercel's URL in production
-  const vercelUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
-
-  const baseUrl = vercelUrl ?? "http://localhost:3000";
+  // Use your deployed site URL explicitly for Google Search Console
+  const baseUrl =
+    "https://pblprojectterm-2-group2-grade10-a-t4dd-iycojd37j.vercel.app";
 
   const lastModified = new Date();
 
