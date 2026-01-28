@@ -14,7 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "PBL Group 3 second term",
-  description: "Group 3 PBL Project Grade 10A This is our website written by Noht for other's to view and appreciate our work. Our PBL project started from an old project from our senior. And we have to improve it on our own but with the guides of our teacher, Miss Wassaporn.",
+  description:
+    "Group 3 PBL Project Grade 10A This is our website written by Noht for other's to view and appreciate our work. Our PBL project started from an old project from our senior. And we have to improve it on our own but with the guides of our teacher, Miss Wassaporn.",
+  verification: {
+    google: "XkpoCf007JFR2eQ7U_9wBhBC64ds8752LjUEVBUA2w0",
+  },
 };
 
 export default function RootLayout({
