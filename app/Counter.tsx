@@ -1,0 +1,172 @@
+"use client";
+
+import { MotionValue, motion, useSpring, useTransform } from "motion/react";
+import type React from "react";
+import { useEffect } from "react";
+import styles from "./Counter.module.css";
+
+type PlaceValue = number | ".";
+
+interface NumberProps {
+  mv: MotionValue<number>;
+  number: number;
+  height: number;
+}
+
+function Number({ mv, number, height }: NumberProps) {
+  const y = useTransform(mv, (latest) => {
+    const placeValue = latest % 10;
+    const offset = (10 + number - placeValue) % 10;
+    let memo = offset * height;
+    if (offset > 5) {
+      memo -= 10 * height;
+    }
+    return memo;
+  });
+
+  return (
+    <motion.span className={styles.counterNumber} style={{ y }}>
+      {number}
+    </motion.span>
+  );
+}
+
+interface DigitProps {
+  place: PlaceValue;
+  value: number;
+  height: number;
+  digitStyle?: React.CSSProperties;
+}
+
+function Digit({ place, value, height, digitStyle }: DigitProps) {
+  if (place === ".") {
+    return (
+      <span
+        className={styles.counterDigit}
+        style={{ height, ...digitStyle, width: "fit-content" }}
+      >
+        .
+      </span>
+    );
+  }
+
+  const valueRoundedToPlace = Math.floor(value / place);
+  const animatedValue = useSpring(0, { stiffness: 120, damping: 20 });
+
+  useEffect(() => {
+    animatedValue.set(valueRoundedToPlace);
+  }, [animatedValue, valueRoundedToPlace]);
+
+  return (
+    <span className={styles.counterDigit} style={{ height, ...digitStyle }}>
+      {Array.from({ length: 10 }, (_, i) => (
+        <Number key={i} mv={animatedValue} number={i} height={height} />
+      ))}
+    </span>
+  );
+}
+
+interface CounterProps {
+  value: number;
+  fontSize?: number;
+  padding?: number;
+  places?: PlaceValue[];
+  gap?: number;
+  borderRadius?: number;
+  horizontalPadding?: number;
+  textColor?: string;
+  fontWeight?: React.CSSProperties["fontWeight"];
+  containerStyle?: React.CSSProperties;
+  counterStyle?: React.CSSProperties;
+  digitStyle?: React.CSSProperties;
+  gradientHeight?: number;
+  gradientFrom?: string;
+  gradientTo?: string;
+  topGradientStyle?: React.CSSProperties;
+  bottomGradientStyle?: React.CSSProperties;
+}
+
+export default function Counter({
+  value,
+  fontSize = 100,
+  padding = 0,
+  places = [...value.toString()].map((ch, i, a) => {
+    if (ch === ".") {
+      return ".";
+    }
+    const dotIndex = a.indexOf(".");
+    const isInteger = dotIndex === -1;
+
+    const exponent = isInteger
+      ? a.length - i - 1
+      : i < dotIndex
+        ? dotIndex - i - 1
+        : -(i - dotIndex);
+
+    return 10 ** exponent;
+  }),
+  gap = 8,
+  borderRadius = 4,
+  horizontalPadding = 8,
+  textColor = "inherit",
+  fontWeight = "inherit",
+  containerStyle,
+  counterStyle,
+  digitStyle,
+  gradientHeight = 16,
+  gradientFrom = "black",
+  gradientTo = "transparent",
+  topGradientStyle,
+  bottomGradientStyle,
+}: CounterProps) {
+  const height = fontSize + padding;
+
+  const defaultCounterStyle: React.CSSProperties = {
+    fontSize,
+    gap,
+    borderRadius,
+    paddingLeft: horizontalPadding,
+    paddingRight: horizontalPadding,
+    color: textColor,
+    fontWeight,
+  };
+
+  const defaultTopGradientStyle: React.CSSProperties = {
+    height: gradientHeight,
+    background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
+  };
+
+  const defaultBottomGradientStyle: React.CSSProperties = {
+    height: gradientHeight,
+    background: `linear-gradient(to top, ${gradientFrom}, ${gradientTo})`,
+  };
+
+  return (
+    <span className={styles.counterContainer} style={containerStyle}>
+      <span
+        className={styles.counterCounter}
+        style={{ ...defaultCounterStyle, ...counterStyle }}
+      >
+        {places.map((place) => (
+          <Digit
+            key={place}
+            place={place}
+            value={value}
+            height={height}
+            digitStyle={digitStyle}
+          />
+        ))}
+      </span>
+      <span className={styles.gradientContainer}>
+        <span
+          className={styles.topGradient}
+          style={topGradientStyle ?? defaultTopGradientStyle}
+        />
+        <span
+          className={styles.bottomGradient}
+          style={bottomGradientStyle ?? defaultBottomGradientStyle}
+        />
+      </span>
+    </span>
+  );
+}
